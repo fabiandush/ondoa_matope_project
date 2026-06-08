@@ -1,0 +1,3 @@
+
+class PhoneAlreadyExistsException(Exception):
+    pass
