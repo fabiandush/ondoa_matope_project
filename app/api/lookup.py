@@ -4,6 +4,8 @@ from sqlalchemy.orm import Session
 from app.core.dependencies import get_db
 from app.services.groups import get_sccs, get_associations, get_signup_lookups
 from app.schemas.groups import LookupResponse, SignupLookupsResponse
+from app.schemas.projects import ProjectBase
+from app.services.project_stats_service import get_project_stats 
 
 router = APIRouter(
     prefix="/lookups",
@@ -33,6 +35,15 @@ def get_associations_endpoint(
 ):
     return get_associations(request=None, db=db)
 
+@router.get(
+    "/project-stats",
+    response_model = list[ProjectBase],
+    status_code = status.HTTP_200_OK
+)
+def get_project_stats_endpoint(
+    db: Session = Depends(get_db)
+):
+    return get_project_stats(db=db)
 
 @router.get(
     "/signup-options",
