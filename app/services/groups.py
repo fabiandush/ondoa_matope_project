@@ -1,5 +1,5 @@
 from app.schemas.groups import LookupResponse, SignupLookupsResponse
-from app.repositories.group_repository import GroupRepository
+from app.repositories.groups_repositories import GroupRepository
 
 from sqlalchemy.orm import Session
 

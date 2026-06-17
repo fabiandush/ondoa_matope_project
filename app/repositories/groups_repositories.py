@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 class GroupRepository:
   @staticmethod
-  def get_sccs(db: Session) -> list[dict]:
+  def get_sccs(db: Session) -> dict:
     result = db.execute(
         text("""
             select

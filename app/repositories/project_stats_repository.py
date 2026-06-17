@@ -6,9 +6,10 @@ class ProjectStatsRepository:
   def get_project_stats(db: Session) -> dict:
     result = db.execute(
       text("""
-           select name, target_amount, default_pledge_amount
-           from projects
+           select name, target_amount, contributed_amount
+           from project_stats
+           LIMIT 1
            """)
 
     )
-    return result.mappings().all()
+    return result.mappings().first()

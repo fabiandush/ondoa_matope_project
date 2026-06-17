@@ -37,7 +37,7 @@ def get_associations_endpoint(
 
 @router.get(
     "/project-stats",
-    response_model = list[ProjectBase],
+    response_model = ProjectBase,
     status_code = status.HTTP_200_OK
 )
 def get_project_stats_endpoint(
