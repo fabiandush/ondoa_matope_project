@@ -15,7 +15,8 @@ def register_user(
     full_name: str,
     phone: str,
     password: str,
-    scc_id: str | None
+    scc_id: str | None,
+    association_ids: list[str]
 ) -> AuthResponse: 
   
   ## Check if user with the same phone already exists
@@ -30,14 +31,26 @@ def register_user(
   ## Hash password
   hashed_password = hash_password(password)
 
+  try:
 
-  member_id = MemberRepository.create_member(
-    db=db,
-    full_name=full_name,
-    phone=phone,
-    password_hash=hashed_password,
-    scc_id=scc_id
-  )
+    member_id = MemberRepository.create_member(
+      db=db,
+      full_name=full_name,
+      phone=phone,
+      password_hash=hashed_password,
+      scc_id=scc_id
+    )
+
+    MemberRepository.add_associations(
+      db=db,
+      member_id = member_id,
+      association_ids = association_ids
+    )
+
+    db.commit()
+  except Exception:
+    db.rollback()
+    raise
 
   return AuthResponse(
     member_id=member_id,

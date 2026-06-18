@@ -28,7 +28,8 @@ def signup_endpoint(
       full_name=request.full_name,
       phone=request.phone,
       password=request.password,
-      scc_id=request.scc_id
+      scc_id=request.scc_id,
+      association_ids=request.association_ids
     )
   
   except PhoneAlreadyExistsException:

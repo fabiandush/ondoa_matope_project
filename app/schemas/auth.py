@@ -19,6 +19,7 @@ class SignUpRequest(BaseModel):
     default = None,
     description = "Small Christian Community Identifier"
   )
+  association_ids: list[str] = []
 
 class LoginRequest(BaseModel):
   phone: str

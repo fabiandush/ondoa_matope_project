@@ -18,6 +18,35 @@ class MemberRepository:
     return result.mappings().first()
   
   @staticmethod
+  def add_associations(
+      db: Session,
+      member_id: str,
+      association_ids: list[str]
+  ):
+      if not association_ids:
+          return
+
+      db.execute(
+          text("""
+              insert into member_associations (
+                  member_id,
+                  association_id
+              )
+              values (
+                  :member_id,
+                  :association_id
+              )
+          """),
+          [
+              {
+                  "member_id": member_id,
+                  "association_id": association_id
+              }
+              for association_id in association_ids
+          ]
+      )
+
+  @staticmethod
   def create_member(
     db: Session,
     full_name: str,
@@ -49,6 +78,8 @@ class MemberRepository:
          }
     )
     member_id = result.scalar()
-    db.commit()
 
     return member_id
+  
+
+  
