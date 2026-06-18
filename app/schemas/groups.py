@@ -1,7 +1,8 @@
 from pydantic import BaseModel, Field
+from uuid import UUID
 
 class LookupResponse(BaseModel):
-  id: str
+  id: UUID
   name: str
 
 class SignupLookupsResponse(BaseModel):

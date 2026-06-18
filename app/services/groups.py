@@ -4,7 +4,7 @@ from app.repositories.groups_repositories import GroupRepository
 from sqlalchemy.orm import Session
 
 def get_sccs(db: Session) -> list[LookupResponse]:
-  return GroupRepository.get_scc(db)
+  return GroupRepository.get_sccs(db)
 
 
 def get_associations(db: Session) -> list[LookupResponse]:

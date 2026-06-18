@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
 class ProjectBase(BaseModel):
-  name: str
+  project_name: str
   target_amount: int
   contributed_amount: int

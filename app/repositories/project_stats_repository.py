@@ -6,7 +6,7 @@ class ProjectStatsRepository:
   def get_project_stats(db: Session) -> dict:
     result = db.execute(
       text("""
-           select name, target_amount, contributed_amount
+           select project_name, target_amount, contributed_amount
            from project_stats
            LIMIT 1
            """)
