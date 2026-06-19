@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from app.core.exceptions import PhoneAlreadyExistsException
 
 from app.repositories.member_repository import MemberRepository
-from app.schemas.auth import AuthResponse
+from app.schemas.auth import AuthResponse, MemberSummary
 
 from app.core.security import (
   hash_password
@@ -33,7 +33,7 @@ def register_user(
 
   try:
 
-    member_id = MemberRepository.create_member(
+    member = MemberRepository.create_member(
       db=db,
       full_name=full_name,
       phone=phone,
@@ -43,7 +43,7 @@ def register_user(
 
     MemberRepository.add_associations(
       db=db,
-      member_id = member_id,
+      member_id = member["id"],
       association_ids = association_ids
     )
 
@@ -53,8 +53,13 @@ def register_user(
     raise
 
   return AuthResponse(
-    member_id=member_id,
     token=create_access_token(
-      str(member_id)
+      str(member["id"])
+    ),
+    member = MemberSummary(
+      id=str(member["id"]),
+      full_name = member["full_name"],
+      role=member["role"],
+      scc_id = str(member["scc_id"])
     )
   )

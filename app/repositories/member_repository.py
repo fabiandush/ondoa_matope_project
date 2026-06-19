@@ -68,7 +68,11 @@ class MemberRepository:
          :password_hash,
          :scc_id
          )
-         returning id
+         returning 
+          id,
+          full_name,
+          role,
+          scc_id
          """),
          {
            "full_name": full_name,
@@ -77,9 +81,6 @@ class MemberRepository:
            "scc_id": scc_id
          }
     )
-    member_id = result.scalar()
 
-    return member_id
-  
-
+    return result.mappings().one()
   

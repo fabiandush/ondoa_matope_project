@@ -29,5 +29,11 @@ class LoginRequest(BaseModel):
   )
 
 class AuthResponse(BaseModel):
-  member_id: UUID
+  member: MemberSummary
   token: str
+
+class MemberSummary(BaseModel):
+  id: str
+  full_name: str
+  role: str
+  scc_id: str | None
