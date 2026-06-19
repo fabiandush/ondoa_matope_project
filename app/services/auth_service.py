@@ -1,6 +1,6 @@
-from app.core.security import create_access_token
+from app.core.security import create_access_token, verify_password
 from sqlalchemy.orm import Session
-from app.core.exceptions import PhoneAlreadyExistsException
+from app.core.exceptions import PhoneAlreadyExistsException, UserDoesNotExist, InvalidCredentialsException
 
 from app.repositories.member_repository import MemberRepository
 from app.schemas.auth import AuthResponse, MemberSummary
@@ -61,5 +61,38 @@ def register_user(
       full_name = member["full_name"],
       role=member["role"],
       scc_id = str(member["scc_id"])
+    )
+  )
+
+## Sign in User
+def login_user(
+    db: Session,
+    phone: str,
+    password: str
+) -> AuthResponse:
+  
+  member = MemberRepository.get_by_phone_for_auth(
+    db=db,
+    phone=phone
+  )
+
+  if not member:
+    raise UserDoesNotExist()
+  
+  if not verify_password(
+    password,
+    member["password_hash"]
+  ): 
+    raise InvalidCredentialsException()
+  
+  return AuthResponse(
+    token = create_access_token(
+      str(member["id"])
+    ),
+    member = MemberSummary(
+      id=str(member["id"]),
+      full_name=member["full_name"],
+      role=member["role"],
+      scc_id=str(member["scc_id"]) if member["scc_id"] else None
     )
   )

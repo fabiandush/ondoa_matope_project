@@ -9,13 +9,29 @@ class MemberRepository:
   ):
     result = db.execute(
     text("""
-         select * from members
+         select id, full_name, phone, role, scc_id from members
          where phone = :phone
          limit 1
       """),
          {"phone": phone}
     )
     return result.mappings().first()
+  
+  @staticmethod
+  def get_by_phone_for_auth(
+     db:Session,
+     phone: str
+  ):
+     result = db.execute(
+        text("""
+              SELECT id, full_name, phone, role, scc_id, password_hash
+              FROM members
+              WHERE phone = :phone
+              LIMIT 1
+          """),
+            {"phone": phone}
+     )
+     return result.mappings().first()
   
   @staticmethod
   def add_associations(
