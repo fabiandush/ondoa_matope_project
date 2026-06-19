@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Field
+from uuid import UUID
 
 class SignUpRequest(BaseModel):
   full_name: str = Field(
@@ -28,5 +29,5 @@ class LoginRequest(BaseModel):
   )
 
 class AuthResponse(BaseModel):
-  member_id: str
+  member_id: UUID
   token: str
