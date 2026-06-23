@@ -1,0 +1,27 @@
+import re
+
+def normalize_phone(phone: str) -> str:
+  phone = phone.strip()
+
+  # Remove spaces, dashes, brackets, etc.
+  phone = re.sub(r"[\s\-\(\)]", "", phone)
+
+  if phone.startswith("+254"):
+    normalized = phone
+
+  elif phone.startswith("254"):
+    normalized = f"+{phone}"
+
+  elif phone.startswith("07"):
+    normalized = f"+254{phone[1:]}"
+
+  elif re.match(r"^7\d{8}$", phone):
+    normalized = f"+254{phone}"
+
+  else:
+    raise ValueError("Invalid Kenyan phone number")
+
+  if not re.match(r"^\+2547\d{8}$", normalized):
+    raise ValueError("Invalid Kenyan phone number")
+
+  return normalized

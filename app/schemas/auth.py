@@ -1,5 +1,4 @@
 from pydantic import BaseModel, Field
-from uuid import UUID
 
 class SignUpRequest(BaseModel):
   full_name: str = Field(
@@ -20,13 +19,13 @@ class SignUpRequest(BaseModel):
     default = None,
     description = "Small Christian Community Identifier"
   )
-  association_ids: list[str] = []
+  association_ids: list[str] = Field(default_factory=list)
 
 class LoginRequest(BaseModel):
-  phone: str
-  password: str = Field(
+  phone: str = Field(
     pattern = r"^(?:254|\+254|0)?7\d{8}$"
   )
+  password: str
 
 class AuthResponse(BaseModel):
   member: MemberSummary

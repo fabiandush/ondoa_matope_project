@@ -42,6 +42,6 @@ def login_endpoint(
 ):
   return login_user(
     db=db,
-    phonr=request.phone,
+    phone=request.phone,
     password=request.password
   )

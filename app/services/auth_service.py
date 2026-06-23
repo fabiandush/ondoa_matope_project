@@ -4,6 +4,8 @@ from app.core.exceptions import PhoneAlreadyExistsException, UserDoesNotExist, I
 
 from app.repositories.member_repository import MemberRepository
 from app.schemas.auth import AuthResponse, MemberSummary
+from app.utils.phone import normalize_phone
+
 
 from app.core.security import (
   hash_password
@@ -19,6 +21,8 @@ def register_user(
     association_ids: list[str]
 ) -> AuthResponse: 
   
+  phone = normalize_phone(phone)
+
   ## Check if user with the same phone already exists
   existing = MemberRepository.get_by_phone(
     db=db,
@@ -71,6 +75,8 @@ def login_user(
     password: str
 ) -> AuthResponse:
   
+  phone = normalize_phone(phone)
+
   member = MemberRepository.get_by_phone_for_auth(
     db=db,
     phone=phone
