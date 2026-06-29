@@ -36,7 +36,7 @@ def normalize_phone(phone: str) -> str:
 def get_phone_parts(phone: str) -> tuple[str, str]:
   phone = normalize_phone(phone)
 
-  front = phone.split[4:7]
-  back = phone.split[-3:]
+  front = phone[4:7]
+  back = phone[-3:]
 
   return front, back
