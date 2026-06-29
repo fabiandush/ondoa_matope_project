@@ -25,3 +25,12 @@ def normalize_phone(phone: str) -> str:
     raise ValueError("Invalid Kenyan phone number")
 
   return normalized
+
+
+def get_phone_parts(phone: str) -> tuple[str, str]:
+  phone = normalize_phone(phone)
+
+  front = phone.split[4:7]
+  back = phone.split[-3]
+
+  return front, back

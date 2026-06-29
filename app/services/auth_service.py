@@ -3,8 +3,9 @@ from sqlalchemy.orm import Session
 from app.core.exceptions import PhoneAlreadyExistsException, UserDoesNotExist, InvalidCredentialsException
 
 from app.repositories.member_repository import MemberRepository
+from app.repositories.reconcilitation_repository import ReconciliationRepository
 from app.schemas.auth import AuthResponse, MemberSummary
-from app.utils.phone import normalize_phone
+from app.utils.phone import normalize_phone, get_phone_parts
 
 
 from app.core.security import (
@@ -35,6 +36,9 @@ def register_user(
   ## Hash password
   hashed_password = hash_password(password)
 
+
+  phone_front, phone_back = get_phone_parts(phone)
+
   try:
 
     member = MemberRepository.create_member(
@@ -49,6 +53,18 @@ def register_user(
       db=db,
       member_id = member["id"],
       association_ids = association_ids
+    )
+    MemberRepository.create_phone(
+      db=db,
+      member_id=member["id"],
+      phone=phone,
+      phone_front=phone_front,
+      phone_back=phone_back,
+    )
+
+    ReconciliationRepository.claim_member_transactions(
+      db=db,
+      member_id = member["id"],
     )
 
     db.commit()
@@ -90,6 +106,11 @@ def login_user(
     member["password_hash"]
   ): 
     raise InvalidCredentialsException()
+  
+  ReconciliationRepository.claim_member_transactions(
+    db = db,
+    member_id=member["id"],
+  )
   
   return AuthResponse(
     token = create_access_token(

@@ -42,3 +42,23 @@ def create_access_token(
     settings.JWT_SECRET_KEY,
     algorithm = settings.JWT_ALGORITHM
   )
+
+def decode_access_token(
+    token: str
+) -> str:
+  try:
+    payload = jwt.decode(
+      token,
+      settings.JWT_SECRET_KEY,
+      algorithms=[settings.JWT_ALGORITHM]
+    )
+
+    member_id = payload.get("sub")
+
+    if not member_id:
+      raise ValueError("Token Missing Subject")
+    
+    return member_id
+  
+  except JWTError:
+    raise ValueError("Invalid Token")

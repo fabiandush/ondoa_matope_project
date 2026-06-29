@@ -62,6 +62,7 @@ class MemberRepository:
           ]
       )
 
+   
   @staticmethod
   def create_member(
     db: Session,
@@ -99,4 +100,40 @@ class MemberRepository:
     )
 
     return result.mappings().one()
+  
+@staticmethod
+def create_phone(
+    db: Session,
+    member_id: str,
+    phone: str,
+    phone_front: str,
+    phone_back: str,
+    is_primary: bool = True,
+) -> None:
+
+    db.execute(
+        text("""
+            INSERT INTO member_phones (
+                member_id,
+                phone,
+                phone_front,
+                phone_back,
+                is_primary
+            )
+            VALUES (
+                :member_id,
+                :phone,
+                :phone_front,
+                :phone_back,
+                :is_primary
+            )
+        """),
+        {
+            "member_id": member_id,
+            "phone": phone,
+            "phone_front": phone_front,
+            "phone_back": phone_back,
+            "is_primary": is_primary,
+        },
+    )
   
