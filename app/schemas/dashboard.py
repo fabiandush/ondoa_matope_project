@@ -16,7 +16,6 @@ class DashboardCommunity(BaseModel):
   member_count: int
 
 class DashboardResponse(BaseModel):
-  full_name: str
   project: DashboardProject
   contribution: DashboardContribution
   scc: DashboardCommunity

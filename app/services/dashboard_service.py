@@ -33,8 +33,6 @@ def get_dashboard(
     )
 
     return DashboardResponse(
-        full_name=scc["full_name"],
-
         project=DashboardProject(
             project_name=project["project_name"],
             target_amount=project["target_amount"],

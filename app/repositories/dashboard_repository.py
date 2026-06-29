@@ -49,13 +49,14 @@ class DashboardRepository:
         result = db.execute(
             text("""
                 SELECT
-                    full_name,
-                    id,
-                    name,
-                    total_contributed,
-                    member_count
-                FROM member_scc_stats
-                WHERE member_id = :member_id
+                    s.id,
+                    s.name,
+                    s.total_contributed,
+                    s.member_count
+                FROM members m
+                Join scc_contribution_stats s
+                  ON s.id = m.scc_id
+                WHERE m.id = :member_id
             """),
             {
                 "member_id": member_id
@@ -72,12 +73,14 @@ class DashboardRepository:
         result = db.execute(
             text("""
                 SELECT
-                    id,
-                    name,
-                    total_contributed,
-                    member_count
-                FROM member_association_stats
-                WHERE member_id = :member_id
+                  a.id,
+                  a.name,
+                  a.total_contributed,
+                  a.member_count
+                FROM member_associations ma
+                JOIN association_contribution_stats a
+                  ON a.id = ma.association_id
+                WHERE ma.member_id = :member_id
             """),
             {
                 "member_id": member_id

@@ -11,7 +11,7 @@ class ReconciliationRepository:
       text("""
           SELECT public.claim_member_transactions(
            :member_id
-           ),
+           )
            """),
           {
           "member_id": member_id
