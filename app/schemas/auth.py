@@ -8,7 +8,7 @@ class SignUpRequest(BaseModel):
   )
   phone: str = Field(
     description = "User's phone number used for login",
-    pattern = r"^(?:254|\+254|0)?7\d{8}$"
+    pattern = r"^(?:254|\+254|0)?[71]\d{8}$"
   )
   password: str = Field(
     description = "User password",
@@ -23,7 +23,7 @@ class SignUpRequest(BaseModel):
 
 class LoginRequest(BaseModel):
   phone: str = Field(
-    pattern = r"^(?:254|\+254|0)?7\d{8}$"
+    pattern = r"^(?:254|\+254|0)?[71]\d{8}$"
   )
   password: str
 
